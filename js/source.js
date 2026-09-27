@@ -99,9 +99,150 @@ $(function () {
     // Do not modify the JS objects above. You will write your code below.
     // *********************************************************************
 
+ // Add dashboard values
+    $("#username").text(username);
+    $(".revenue-amt").text(revenueAmt);
+    $("#customer-num").text(customerNum);
+    $("#orders-amt").text(ordersAmt);
+    $("#issues-amt").text(issuesAmt);
+    $("#notification-num").text(notifAmt);
 
 
-       
+    // Add sales table rows
+    sales.forEach(function (sale) {
 
+        let row = $("<tr>");
 
+        row.append($("<td>").text(sale.product));
+        row.append($("<td>").text(sale.quantity));
+        row.append($("<td>").text(sale.revenue));
+
+        $("#salesTableBody").append(row);
     });
+
+
+    // Add activity list items
+    activities.forEach(function (activity) {
+
+        let item = $("<li>").text(activity.message);
+
+        $("#activity-list").append(item);
+    });
+
+
+    // Add customer table rows
+    customers.forEach(function (customer) {
+
+        let row = $("<tr>");
+
+        row.append($("<td>").text(customer.name));
+        row.append($("<td>").text(customer.email));
+
+        let status = $("<span>")
+            .addClass("status")
+            .text(customer.status);
+
+        if (customer.status === "Active") {
+            status.addClass("status-active");
+        }
+        else {
+            status.addClass("status-pending");
+        }
+
+        row.append($("<td>").append(status));
+        row.append($("<td>").text(customer.joined));
+
+        $("#customerTableBody").append(row);
+    });
+
+
+    // Add system status messages
+    messages.forEach(function (message) {
+
+        let item = $("<li>").text(message.messsage);
+
+        $("#system-status-list").append(item);
+    });
+
+
+    // Add notification list items
+    notifications.forEach(function (notification) {
+
+        let item = $("<li>").text(notification.messsage);
+
+        $("#notifications-list").append(item);
+    });
+
+
+    // Add task list items
+    tasks.forEach(function (task) {
+
+        let item = $("<li>").text(task.messsage);
+
+        $("#tasks-list").append(item);
+    });
+
+
+    // Convert all buttons to jQuery UI buttons
+    $("button").button();
+
+
+    // Convert dashboard tabs to jQuery UI tabs
+    $("#dashboardTabs").tabs();
+
+
+    // Convert accordion to jQuery UI accordion
+    $("#accordion").accordion({
+        collapsible: true,
+        heightStyle: "content"
+    });
+
+
+    // Convert registration date to jQuery UI datepicker
+    $("#customerDate").datepicker();
+
+
+    // Create customer dialog
+    $("#customerDialog").dialog({
+
+        autoOpen: false,
+        modal: true,
+        width: 450,
+
+        buttons: {
+
+            "Create Customer": function () {
+
+                var name = $("#customerName").val();
+                var email = $("#customerEmail").val();
+
+                if (!name || !email) {
+
+                    alert(
+                        "Please enter a name and email."
+                    );
+
+                    return;
+                }
+
+                alert("Customer created: " + name);
+
+                $(this).dialog("close");
+            },
+
+            "Cancel": function () {
+
+                $(this).dialog("close");
+            }
+        }
+    });
+
+
+    // Open customer dialog when New Customer button is clicked
+    $("#newCustomerButton").on("click", function () {
+
+        $("#customerDialog").dialog("open");
+    });
+
+
+});
